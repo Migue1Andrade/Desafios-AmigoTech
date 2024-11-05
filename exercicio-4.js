@@ -1,60 +1,58 @@
-const dataAtual = new Date('2022-06-07T01:01:06.336Z'); 
+const dataAtual = new Date('2022-06-07T01:01:06.336Z');
 
 retornaMesPorExtenso = data => {
-  const mes = data.getMonth() + 1;
+	const mes = data.getMonth() + 1;
 
-  switch(mes) {
-    case 1:
-      return 'Janeiro';
-    break;
-    
-    case 2:
-      return 'Fevereiro';
-    break;
+	switch (mes) {
+		case 1:
+			return 'Janeiro';
+			break;
 
-	case 3:
-		return 'Março';
-	break;
+		case 2:
+			return 'Fevereiro';
+			break;
 
-	case 4:
-		return 'Abril';
-	break;
-	
-	case 5:
-		return 'Maio';
-	break;
+		case 3:
+			return 'Março';
+			break;
 
-	case 6:
-		return 'Junho';
-	break; 
+		case 4:
+			return 'Abril';
+			break;
 
-	case 7: 
-		return 'Julho';
-	break; 
+		case 5:
+			return 'Maio';
+			break;
 
-	case 8: 
-		return 'Agosto';
-	break;
+		case 6:
+			return 'Junho';
+			break;
 
-	case 9: 
-		return 'Setembro';
-	break;
+		case 7:
+			return 'Julho';
+			break;
 
-	case 10:
-		return 'Outubro'; 
-	break; 
+		case 8:
+			return 'Agosto';
+			break;
 
-	case 11: 
-		return 'Novembro'; 
-	break; 
+		case 9:
+			return 'Setembro';
+			break;
 
-	case 12: 
-		return 'Dezembro';
-	break;
-  }
+		case 10:
+			return 'Outubro';
+			break;
+
+		case 11:
+			return 'Novembro';
+			break;
+
+		case 12:
+			return 'Dezembro';
+			break;
+	}
 }
- 
-
 
 const mesExtenso = retornaMesPorExtenso(dataAtual);
-console.log(mesExtenso); 
+console.log(mesExtenso);
