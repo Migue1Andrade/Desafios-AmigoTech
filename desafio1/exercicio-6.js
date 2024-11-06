@@ -1,7 +1,7 @@
-const Li = (num1, num2) => {
-	if (num1 > 15 || num2 > 2) return console.log('Error');
+let count = 0;
 
-	let count = 0;
+const row = (num1, num2) => {
+	if (num1 > 15 || num2 > 2) return console.log('nao podemos ter mais que 15 linhas,  nem podemos ter mais que 2 linhas por cada pagina');
 
 	while (count < num1) {
 		for (let i = 0; i < num2; i++) {
@@ -12,8 +12,9 @@ const Li = (num1, num2) => {
 				console.log(`<li>página: ${count * num2 + i + 1}</li>`);
 			};
 		};
+
 		count++;
 	};
 };
 
-Li(15, 2);
+row(15, 2);

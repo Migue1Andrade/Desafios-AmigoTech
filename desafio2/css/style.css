@@ -1,0 +1,50 @@
+body {
+    margin: 0;
+    background-color: black;
+}
+
+.traffic-light {
+    width: 400px;
+    height: 600px;
+    display: flex;
+    justify-self: center;
+    flex-direction: column;
+    margin-top: 10%;
+    background-color: grey;
+}
+
+.green {
+    width: 130px;
+    height: 130px;
+    background-color: green;
+    border-radius: 100%;
+    margin: 10%;
+    margin-left: 33%;
+    display: flex;
+}
+
+.yellow {
+    width: 130px;
+    height: 130px;
+    background-color: yellow;
+    border-radius: 100%;
+    margin: 10%;
+    margin-left: 33%;
+}
+
+.red {
+    width: 130px;
+    height: 130px;
+    background-color: red;
+    border-radius: 100%;
+    margin: 10%;
+    margin-left: 33%;
+}
+
+.power {
+    margin-left: 37%;
+    width: 100px;
+    height: 50px;
+}
+
+.power:hover {

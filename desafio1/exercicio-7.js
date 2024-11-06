@@ -5,7 +5,6 @@ const array3 = [0, 1, 2, 88, 9, 88, 5, 8, 0, 200, 100];
 let array6 = array1.concat(array2, array3);
 
 const temp = new Set(array6);
-
 const arrayFull = Array.from(temp);
 
 console.log(arrayFull);

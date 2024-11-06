@@ -1,4 +1,4 @@
-const dataFormatada = new Date("2022-06-07T01:01:06.336Z");
+const dataFormat = new Date("2022-06-07T01:01:06.336Z");
 
 const options = {
 	year: 'numeric',
@@ -6,14 +6,14 @@ const options = {
 	day: '2-digit'
 };
 
-dataFormatada.toLocaleDateString('pt-BR', options);
+dataFormat.toLocaleDateString('pt-BR');
 
 const data = () => {
-	const ano = dataFormatada.getFullYear();
-	const mes = dataFormatada.getMonth() + 1;
-	const dia = dataFormatada.getDate();
+	const year = dataFormat.getFullYear();
+	const mouth = dataFormat.getMonth() + 1;
+	const day = dataFormat.getDate();
 
-	return `${dia}/${mes}/${ano}`;
+	return `${day}/${mouth}/${year}`;
 };
 
-console.log(data(dataFormatada));
+console.log(data(dataFormat));

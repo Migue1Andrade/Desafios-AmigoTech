@@ -1,9 +1,9 @@
-const dataAtual = new Date('2022-06-07T01:01:06.336Z');
+const toDayDate = new Date('2022-06-07T01:01:06.336Z');
 
-retornaMesPorExtenso = data => {
-	const mes = data.getMonth() + 1;
+parseMouthToString = data => {
+	const mouth = data.getMonth() + 1;
 
-	switch (mes) {
+	switch (mouth) {
 		case 1:
 			return 'Janeiro';
 			break;
@@ -54,5 +54,5 @@ retornaMesPorExtenso = data => {
 	}
 }
 
-const mesExtenso = retornaMesPorExtenso(dataAtual);
-console.log(mesExtenso);
+const resultMouth = parseMouthToString(toDayDate);
+console.log(resultMouth);
