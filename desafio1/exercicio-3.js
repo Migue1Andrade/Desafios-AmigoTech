@@ -1,3 +1,9 @@
+// Retorne a data abaixo (no formato ISO) nos seguintes padrões:
+
+// DIA/MÊS/ANO
+// DIA/MÊS/ANO HORA:MINUTO
+// const date = '2022-06-07T01:01:06.336Z';
+
 const date = new Date('2022-06-07T01:01:06.336Z');
 
 addZero = num => {
