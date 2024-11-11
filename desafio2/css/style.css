@@ -1,0 +1,118 @@
+body {
+	height: 100vh;
+	padding-left: 300px;
+}
+
+.trafic-light {
+	width: 150px;
+	height: 300px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	background-color: rgb(112, 112, 112);
+	border: 5px solid rgb(112, 112, 112);
+	border-radius: 12px;
+	flex-flow: nowrap column;
+}
+
+.trafic-counter {
+	width: 150px;
+	height: 100px;
+	position: absolute;
+	top: 1%;
+	right: 80%;
+	left: 39%;
+	background-color: rgb(112, 112, 112);
+	border: 5px solid rgb(112, 112, 112);
+	border-radius: 12px;
+	margin-bottom: 2000%;
+	padding-left: 40px;
+	padding-top: 10px;
+	display: flex;
+	align-items: center;
+}
+
+.red {
+	background-color: red;
+	border: 2px solid black;
+	position: relative;
+	width: 70px;
+	height: 130px;
+	margin: 10px auto;
+	border-radius: 5em;
+	transition: background-color 1s;
+}
+
+.green {
+	background-color: green;
+	border: 2px solid black;
+	position: relative;
+	width: 70px;
+	height: 130px;
+	margin: 10px auto;
+	border-radius: 5em;
+	transition: background-color 1s;
+}
+
+.yellow {
+	background-color: yellow;
+	border: 2px solid black;
+	position: relative;
+	width: 70px;
+	height: 130px;
+	margin: 10px auto;
+	border-radius: 5em;
+	transition: background-color 1s;
+}
+
+.timer {
+	margin-top: 10px;
+	width: 100px;
+	height: 60px;
+	background-color: rgb(81, 66, 66);
+	border-radius: 4px;
+}
+
+.power {
+	background-color: green;
+	border-radius: 1em;
+	margin-top: 1em;
+	height: 30px;
+	width: 30px;
+	border-radius: 100%;
+	font-family: monospace;
+	margin-top: 1400%;
+}
+
+#time {
+	display: flex;
+	justify-content: center;
+	font-size: xx-large;
+	margin: 0;
+	color: aliceblue;
+	font-family: monospace;
+}
+
+.afterwards {
+	width: 30px;
+	height: 600px;
+	background-color: rgb(112, 112, 112);
+	margin-left: 65px;
+}
+
+.counter {
+	margin-top: 15px;
+	width: 100px;
+	height: 60px;
+	background-color: rgb(81, 66, 66);
+	border-radius: 4px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: xx-large;
+	margin: 0;
+	color: aliceblue;
+	font-family: monospace;
+	margin-bottom: 16px;
+	margin-left: 15px;
+}
