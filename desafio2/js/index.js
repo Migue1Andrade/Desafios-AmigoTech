@@ -19,11 +19,9 @@ const buttonChecks = () => {
 	if(isRed === true || isYellow === true) return;
 	
 	if(isGreen === true) {
-		
 		if(isPassed60s === false) alert('respeite o tempo de 60s');
 
 		if (isPassed60s === true) {
-			
 			isPassed60s = false;
 			isButtonClicked = true;
 			atualTimerLight = 3;
@@ -50,7 +48,6 @@ const decreaseAtualTimerLight = () => {
 	counter.textContent = `${atualTimerLight.toString().padStart(2, '0')}`;
 
 	if (atualTimerLight <= 0) {
-
 		clearInterval(controlAtualTimer);
 
 		counter.textContent = "0";
@@ -61,6 +58,7 @@ const turnRed = () => {
 	red.style.backgroundColor = "red";
 	green.style.backgroundColor = "black";
 	yellow.style.backgroundColor = "black";
+	counter.style.color = "red"; 
 
 	setTimeout(turnGreen, 15000);
 
@@ -86,6 +84,7 @@ const turnGreen = () => {
 	green.style.backgroundColor = "rgb(71, 252, 71)";
 	red.style.backgroundColor = "black";
 	yellow.style.backgroundColor = "black";
+	counter.style.color = "green";
 
 	greenSetTimeOut();
 
@@ -99,14 +98,12 @@ setInterval(decreaseAtualTimerLight, 1000);
 turnGreen();
 
 const updateTimer = () => {
-	currenteTimer--;
-
 	const seconds = currenteTimer % 60;
+	currenteTimer--;
 
 	timer.textContent = `${seconds.toString().padStart(2, '0')}`;
 
 	if (currenteTimer <= 0) {
-
 		isPassed60s = true;
 		timer.textContent = "0";
 		currenteTimer = 60;
