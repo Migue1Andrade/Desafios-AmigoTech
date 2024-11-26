@@ -10,42 +10,42 @@
 <body>
 	<span class="root">
 		<div class="search">
-				<p>Pesquisar</p> 
-				<input type="text" id="input-search" placeholder="buscar...">
-				<input id="dateTime" class="start" type="date" placeholder="Data de Início" oninput="yearLimit(this)" />
-				<input id="dateTime" class="end" type="date" placeholder="Data de Fim" oninput="yearLimit(this)" />
-				<button id="month">mes</button>
-				<button id="day">dia</button>
-				<select required class="search-select">
-					<option value="convenio">convênio</option>
-				</select>
-			</div>
-			<div>
-				<table class="table">
-					<thead>
+			<p>Pesquisar</p> 
+			<input type="text" id="input-search" placeholder="buscar...">
+			<input id="dateTime" class="start" type="date" placeholder="Data de Início" oninput="yearLimit(this)" />
+			<input id="dateTime" class="end" type="date" placeholder="Data de Fim" oninput="yearLimit(this)" />
+			<button id="month">mes</button>
+			<button id="day">dia</button>
+			<select required class="search-select">
+				<option value="convenio">convênio</option>
+			</select>
+		</div>
+		<div>
+			<table class="table">
+				<thead>
 					<tr>
-						<th>Data</th>
-						<th>Número</th>
-						<th> 
-							<i class="fa-solid fa-sort-up" id="icon"></i>    
-							Paciente
-						</th>
-						<th>Convênio</th>
-						<th>Preço</th>
+					<th>Data</th>
+					<th>Número</th>
+					<th> 
+						<i class="fa-solid fa-sort-up" id="icon"></i>    
+						Paciente
+					</th>
+					<th>Convênio</th>
+					<th>Preço</th>
 					</tr>
-					</thead>
-					<tbody>
+				</thead>
+				<tbody>
 					</tbody>
 				</table>
-			</div>
-			<div class="pagination">
-				<button id="first-btn" class="align-buttons">primeiro</button>
-				<button id="prev-btn"><</button>
-				<span id="page-buttons" class="buttons"></span>
-				<button id="next-btn">></button>
-				<button id="last-btn" class="align-buttons">Ultimo</button>
-			</div>
-		<script src="../js/list.js"></script>
-	</span>
+		</div>
+	</span>	
+	<div class="pagination">
+		<button id="first-btn" class="align-buttons">primeiro</button>
+		<button id="prev-btn"><</button>
+		<span id="page-buttons" class="buttons"></span>
+		<button id="next-btn">></button>
+		<button id="last-btn" class="align-buttons">Ultimo</button>
+	</div>
+	<script src="../js/list.js"></script>
 </body>
 </html>
