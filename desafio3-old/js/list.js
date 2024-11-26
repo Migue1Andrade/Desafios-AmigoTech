@@ -1,7 +1,7 @@
 let dataTableCopy;
 let dataInsurancesCopy;
-let isOrderned = true;
 let flag;
+let isOrderned = true;
 let paginationButtonFlag = true;
 let paginationFlag = true;
 let currentPage = 0;
@@ -14,12 +14,12 @@ const guidesPerPage = 2;
 const thumbUrl = "https://placehold.co/150x150";
 const table = document.querySelector('.table tbody');
 const select = document.querySelector('.search-select');
+const selectValue = parseInt(select.value);
 const navBar = document.querySelector('.search');
 const input = document.getElementById('input-search');
 const div = document.querySelector('.search');
 const dateStart = document.querySelector('.start');
 const dateEnd = document.querySelector('.end');
-const selectValue = parseInt(select.value);
 const day = document.getElementById('month');
 const month = document.getElementById('day');
 const icon = document.getElementById('icon');
@@ -31,58 +31,82 @@ const paginationButtons = document.getElementById('page-buttons');
 const paginationDiv = document.querySelector('.pagination');
 const root = document.querySelector('.root'); 
 const expectedHTML = `
-<div class="search">
-				<p>Pesquisar</p> 
-				<input type="text" id="input-search" placeholder="buscar...">
-				<input id="dateTime" class="start" type="date" placeholder="Data de Início" oninput="yearLimit(this)">
-				<input id="dateTime" class="end" type="date" placeholder="Data de Fim" oninput="yearLimit(this)">
-				<button id="month">mes</button>
-				<button id="day">dia</button>
-				<select required="" class="search-select">
-					<option value="convenio">convênio</option>
-				<option value="3322">Amil</option><option value="3293">Bradesco</option><option value="99231">Hapvida</option><option value="1322">CASSI</option><option value="23111">Sulamérica</option><option value="8323">Amil Cooperados</option><option value="27172">Amil 500</option><option value="92813">TRT</option><option value="18293">PLAN ASSIST</option><option value="23321">AMEPE CAMPE</option><option value="12322">ASSEFAZ</option><option value="2881">BANCO CENTRAL</option><option value="992">CAMED SAÚDE</option></select>
-			</div>
-			<div>
-				<table class="table">
-					<thead>
+ <div class="search">
+			<p>Pesquisar</p> 
+			<input type="text" id="input-search" placeholder="buscar...">
+			<input id="dateTime" class="start" type="date" placeholder="Data de Início" oninput="yearLimit(this)">
+			<input id="dateTime" class="end" type="date" placeholder="Data de Fim" oninput="yearLimit(this)">
+			<button id="month">mes</button>
+			<button id="day">dia</button>
+			<select required="" class="search-select">
+				<option value="convenio">convênio</option>
+			<option value="3322">Amil</option><option value="3293">Bradesco</option><option value="99231">Hapvida</option><option value="1322">CASSI</option><option value="23111">Sulamérica</option><option value="8323">Amil Cooperados</option><option value="27172">Amil 500</option><option value="92813">TRT</option><option value="18293">PLAN ASSIST</option><option value="23321">AMEPE CAMPE</option><option value="12322">ASSEFAZ</option><option value="2881">BANCO CENTRAL</option><option value="992">CAMED SAÚDE</option></select>
+		</div>
+		<div>
+			<table class="table">
+				<thead>
 					<tr>
-						<th>Data</th>
-						<th>Número</th>
-						<th> 
-							<i class="fa-solid fa-sort-up" id="icon"></i>    
-							Paciente
-						</th>
-						<th>Convênio</th>
-						<th>Preço</th>
+					<th>Data</th>
+					<th>Número</th>
+					<th> 
+						<i class="fa-solid fa-sort-up" id="icon"></i>    
+						Paciente
+					</th>
+					<th>Convênio</th>
+					<th>Preço</th>
 					</tr>
-					</thead>
-					<tbody></tbody>
+				</thead>
+				<tbody></tbody>
 				</table>
-			</div>
-			<div class="pagination">
-				<button id="first-btn" class="align-buttons">primeiro</button>
-				<button id="prev-btn">&lt;</button>
-				<span id="page-buttons" class="buttons"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></span>
-				<button id="next-btn">&gt;</button>
-				<button id="last-btn" class="align-buttons">Ultimo</button>
-			</div>
-		<script src="../js/list.js"></script>
+		</div>
+`.trim();
+const OtherExpectedHtml = `
+ <div class="search">
+			<p>Pesquisar</p> 
+			<input type="text" id="input-search" placeholder="buscar...">
+			<input id="dateTime" class="start" type="date" placeholder="Data de Início" oninput="yearLimit(this)">
+			<input id="dateTime" class="end" type="date" placeholder="Data de Fim" oninput="yearLimit(this)">
+			<button id="month">mes</button>
+			<button id="day">dia</button>
+			<select required="" class="search-select">
+				<option value="convenio">convênio</option>
+			<option value="3322">Amil</option><option value="3293">Bradesco</option><option value="99231">Hapvida</option><option value="1322">CASSI</option><option value="23111">Sulamérica</option><option value="8323">Amil Cooperados</option><option value="27172">Amil 500</option><option value="92813">TRT</option><option value="18293">PLAN ASSIST</option><option value="23321">AMEPE CAMPE</option><option value="12322">ASSEFAZ</option><option value="2881">BANCO CENTRAL</option><option value="992">CAMED SAÚDE</option></select>
+		</div>
+		<div>
+			<table class="table">
+				<thead>
+					<tr>
+					<th>Data</th>
+					<th>Número</th>
+					<th> 
+						<i class="fa-solid fa-sort-down" id="icon"></i>    
+						Paciente
+					</th>
+					<th>Convênio</th>
+					<th>Preço</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+				</table>
+		</div>
 `.trim();
 
 const tableJson = () => {
 	fetch('https://augustoferreira.com/augustoferreira/amigo/guides.json')
 	.then(response => {
 		if (!response.ok) throw new Error('Rede não ok');
-		
+
 		return response.json();
 	}).then(data => {
 		dataTableCopy = data.data;
 		if (dataTableCopy && dataTableCopy.guides) {
-			const sortedGuides = sortedGuides(dataTableCopy.guides);
+			dataTableCopy.guides.forEach(guide => completingHealthInsurances(dataTableCopy.guides, dataInsurancesCopy));
+			
+			const sortedGuidesResult = sortedGuides(dataTableCopy.guides); 
 
-			createPagination(dataTableCopy.guides.length, sortedGuides);
+			createPagination(dataTableCopy.guides.length, sortedGuidesResult);
 			createTableRows(dataTableCopy.guides);
-		}
+		};
 		currentMonth();
 	}).catch(error => {
 		console.error('Erro ao buscar o JSON:', error);
@@ -93,17 +117,32 @@ const insuranceJson = () => {
 	fetch('https://augustoferreira.com/augustoferreira/amigo/insurances.json')
 	.then(response => {
 		if (!response.ok) throw new Error('Rede não ok');
-		
+
 		return response.json();
 	}).then(data => {
 		dataInsurancesCopy = data.data;
-		
+
 		createSelectorChilds();
 	}).catch(error => {
 		console.error('Erro ao buscar o JSON:', error);
 	});
 };
-	
+
+const completingHealthInsurances = (guides, healthInsurances) => {
+	guides.forEach(guide => {
+		if (guide.health_insurance === null) {
+			const insurance = healthInsurances.find(num => num.id === guide.insurance_id);
+			if (insurance) {
+				guide.health_insurance = {
+					id: insurance.id,
+					name: insurance.name,
+					is_deleted: false,
+				};
+			}
+		}
+	});
+};
+
 const warning = () => {
 	const warning = document.createElement('div');
 
@@ -119,11 +158,9 @@ const warning = () => {
 
 const isValid = () => {
 	const divContent = root.innerHTML.trim();
-	
-	paginationDiv.innerHTML = '';
 
-	if (divContent === expectedHTML) return; 
-	
+	if (divContent === expectedHTML || divContent === OtherExpectedHtml) return; 
+
 	else warning();
 };
 
@@ -174,8 +211,7 @@ const callDataByData = () => {
 	};
 };
 
-const sortedGuides = (guides) => isOrderned ? guides.sort((firstName, secondName) => firstName.patient.name.localeCompare(secondName.patient.name)) : guides.reverse();
-
+const sortedGuides = guides => isOrderned ? guides.sort((guideA, guideB) => guideA.patient.name.localeCompare(guideB.patient.name)) : guides.reverse();
 
 select.addEventListener('change', () => {
 	const selectValue = parseInt(select.value);
@@ -192,7 +228,7 @@ select.addEventListener('change', () => {
 		currentPage = 0; 
 
 		updateTable(dataTableCopy.guides);
-		incialPagination();
+		inicialPagination();
 	};
 	dateStart.value = '';
 	dateEnd.value = '';
@@ -201,56 +237,58 @@ select.addEventListener('change', () => {
 const updateTable = guides => {
 	const startIndex = currentPage * guidesPerPage;
 	const endIndex = startIndex + guidesPerPage;
-	
+
 	guidesToDisplay = guides.slice(startIndex, endIndex);
 
 	createTableRows(guidesToDisplay);
 };
 
-const incialPagination = () => {
+const inicialPagination = () => {
 	paginationFlag = true;
 	paginationButtonFlag = true;
 
-	createPagination(dataTableCopy.guides.length, sort(dataTableCopy.guides));
-}
+	createPagination(dataTableCopy.guides.length, sortedGuides(dataTableCopy.guides));
+};
 
 prevButton.addEventListener('click', () => {
 	if (notFounded) return;
 	if (currentPage > 0) {
-		currentPage--; 
-		
+		currentPage--;
+
 		updateTable(dataTableCopy.guides);
-	}
-	incialPagination();
+	};
+	inicialPagination();
 });
 
 nextButton.addEventListener('click', () => {
 	if (notFounded) return;
 
 	const totalPages = Math.ceil(dataTableCopy.guides.length / guidesPerPage);
-	
-	if (currentPage < totalPages - 1) {
-		currentPage++; 
-		updateTable(dataTableCopy.guides);
-	}
 
-	incialPagination();
+	if (currentPage < totalPages - 1) {
+		currentPage++;
+		updateTable(dataTableCopy.guides);
+	};
+
+	inicialPagination();
 });
 
 firstButton.addEventListener('click', () => {
-	currentPage = 0; 
+	currentPage = 0;
+	notFounded = false;
 
 	updateTable(dataTableCopy.guides);
-	incialPagination();
+	inicialPagination();
 });
 
 lastButton.addEventListener('click', () => {
 	const totalPages = Math.ceil(dataTableCopy.guides.length / guidesPerPage);
-	
+
 	currentPage = totalPages - 1;
+	notFounded = false;
 
 	updateTable(dataTableCopy.guides);
-	incialPagination();
+	inicialPagination();
 });
 
 day.addEventListener('click', () => {
@@ -264,7 +302,7 @@ month.addEventListener('click', () => {
 });
 
 icon.addEventListener('click', () => {
-	const sortedGuides = sortedGuides(guidesToDisplay);
+	const sorted = sortedGuides(guidesToDisplay);
 
 	isOrderned = !isOrderned;
 
@@ -274,9 +312,10 @@ icon.addEventListener('click', () => {
 	} else {
 		icon.classList.remove('fa-sort-up');
 		icon.classList.add('fa-sort-down');
-	}
+	};
 
-	createTableRows(sortedGuides);
+	createTableRows(sorted);
+	inicialPagination();
 });
 
 dateEnd.addEventListener('change', () => {
@@ -321,14 +360,14 @@ const witchTumb = (patient, image) => image.src = patient.thumb_url || thumbUrl;
 
 const isNull = (row, guide) => {
 	if (!guide) return row.insertCell().innerHTML = '-';
-	
+
 	else return row.insertCell().innerHTML = guide;
 };
 
 const ifNaN = guide => {
 	if(isNaN(guide))guide = '-';
 
-	return guide.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+	return guide.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
 };
 
 const createPagination = (count, guides) => {
@@ -336,7 +375,7 @@ const createPagination = (count, guides) => {
 
 	const totalPages = Math.ceil(count / guidesPerPage);
 
-	if (isEmpyty) { paginationButtons.innerHTML = ''; return }
+	if (isEmpyty) { paginationButtons.innerHTML = ''; return };
 	if (paginationFlag) paginationButtons.innerHTML = '';
 
 	for (let i = 0; i < totalPages; i++) {
@@ -356,22 +395,22 @@ const createPagination = (count, guides) => {
 		});
 
 		if(paginationButtonFlag) paginationButtons.appendChild(button);
-	}
+	};
 
 	for (let i = 0; i < totalPages; i++) {
 		const startIndex = i * guidesPerPage;
 		const endIndex = startIndex + guidesPerPage;
 
 		guidesToDisplay = guidesCopy.slice(startIndex, endIndex);
-	}
+	};
 
-	return guidesToDisplay
+	return guidesToDisplay;
 };
 
 const insertEmptyState = () => {
 	const newRow = table.insertRow();
 	const cell = newRow.insertCell();
-	
+
 	cell.colSpan = 5;
 	cell.style.textAlign = 'center';
 	cell.innerHTML = 'nenhuma guia encontrada';
@@ -383,7 +422,7 @@ const insertEmptyState = () => {
 
 const buildTables = guide => {
 	const row = table.insertRow();
-		
+
 	isNull(row, formatDate(guide.start_date));
 	isNull(row, guide.number);
 
@@ -403,10 +442,10 @@ const buildTables = guide => {
 
 const createTableRows = guides => {
 	const count = guides.length;
-	
+
 	table.innerHTML = '';
 
-	isValid(); 
+	isValid();
 
 	if (!guides.length) {
 		return insertEmptyState();
@@ -424,8 +463,8 @@ const yearLimit = input => {
 };
 
 const init = () => {
-	tableJson(); 
-	insuranceJson(); 
+	insuranceJson();
+	tableJson();
 };
 
-init(); 
+init();
