@@ -78,7 +78,7 @@ const tableJson = () => {
 	}).then(data => {
 		dataTableCopy = data.data;
 		if (dataTableCopy && dataTableCopy.guides) {
-			const sortedGuides = sort(dataTableCopy.guides);
+			const sortedGuides = sortedGuides(dataTableCopy.guides);
 
 			createPagination(dataTableCopy.guides.length, sortedGuides);
 			createTableRows(dataTableCopy.guides);
@@ -105,10 +105,11 @@ const insuranceJson = () => {
 };
 	
 const warning = () => {
+	const warning = document.createElement('div');
+
 	document.querySelector('.search').style.display = 'none';
 	document.querySelector('.table').style.display = 'none';
 
-	const warning = document.createElement('div');
 	warning.id = 'reload-warning';
 	warning.innerHTML = 'Por favor, recarregue a página';
 
@@ -118,6 +119,7 @@ const warning = () => {
 
 const isValid = () => {
 	const divContent = root.innerHTML.trim();
+	
 	paginationDiv.innerHTML = '';
 
 	if (divContent === expectedHTML) return; 
@@ -136,6 +138,7 @@ const createSelectorChilds = () => {
 		
 		option.value = insurance.value;
 		option.text = insurance.text;
+
 		select.appendChild(option);
 	});
 };
@@ -162,22 +165,17 @@ const callDataByData = () => {
 		const startDate = new Date(dateStart.value);
 		const endDate = new Date(dateEnd.value);
 		const dataFilter = dataTableCopy.guides.filter(guide => {
-		const guideDate = new Date(guide.start_date);
+			const guideDate = new Date(guide.start_date);
 
-		return guideDate >= startDate && guideDate <= endDate;
+			return guideDate >= startDate && guideDate <= endDate;
 		});
 
 		createTableRows(dataFilter);
 	};
 };
 
-const sort = guides => {
-	if (isOrderned) {
-		return guides.sort((a, b) => a.patient.name.localeCompare(b.patient.name));
-	} else {
-		return guides.reverse(); 
-	};
-};
+const sortedGuides = (guides) => isOrderned ? guides.sort((firstName, secondName) => firstName.patient.name.localeCompare(secondName.patient.name)) : guides.reverse();
+
 
 select.addEventListener('change', () => {
 	const selectValue = parseInt(select.value);
@@ -192,8 +190,8 @@ select.addEventListener('change', () => {
 	};
 	if (select.value === 'convenio') {
 		currentPage = 0; 
-		updateTable(dataTableCopy.guides);
 
+		updateTable(dataTableCopy.guides);
 		incialPagination();
 	};
 	dateStart.value = '';
@@ -203,6 +201,7 @@ select.addEventListener('change', () => {
 const updateTable = guides => {
 	const startIndex = currentPage * guidesPerPage;
 	const endIndex = startIndex + guidesPerPage;
+	
 	guidesToDisplay = guides.slice(startIndex, endIndex);
 
 	createTableRows(guidesToDisplay);
@@ -227,18 +226,20 @@ prevButton.addEventListener('click', () => {
 
 nextButton.addEventListener('click', () => {
 	if (notFounded) return;
+
 	const totalPages = Math.ceil(dataTableCopy.guides.length / guidesPerPage);
 	
 	if (currentPage < totalPages - 1) {
 		currentPage++; 
 		updateTable(dataTableCopy.guides);
 	}
+
 	incialPagination();
 });
 
 firstButton.addEventListener('click', () => {
-	
 	currentPage = 0; 
+
 	updateTable(dataTableCopy.guides);
 	incialPagination();
 });
@@ -263,7 +264,8 @@ month.addEventListener('click', () => {
 });
 
 icon.addEventListener('click', () => {
-	
+	const sortedGuides = sortedGuides(guidesToDisplay);
+
 	isOrderned = !isOrderned;
 
 	if (isOrderned) {
@@ -274,7 +276,6 @@ icon.addEventListener('click', () => {
 		icon.classList.add('fa-sort-down');
 	}
 
-	const sortedGuides = sort(guidesToDisplay);
 	createTableRows(sortedGuides);
 });
 
@@ -314,7 +315,7 @@ const formatDate = date => {
 	return `${day}/${mounth}/${year}`;
 };
 
-const isDelete = healthInsurance => !healthInsurance ? '-' : healthInsurance.is_deleted ? `<span style="text-decoration: line-through;">${healthInsurance.name}</span>` : healthInsurance.name;
+const isInsuranceDelete = healthInsurance => !healthInsurance ? '-' : healthInsurance.is_deleted ? `<span style="text-decoration: line-through;">${healthInsurance.name}</span>` : healthInsurance.name;
 
 const witchTumb = (patient, image) => image.src = patient.thumb_url || thumbUrl;
 
@@ -382,25 +383,27 @@ const insertEmptyState = () => {
 
 const buildTables = guide => {
 	const row = table.insertRow();
-		isNull(row, formatDate(guide.start_date));
-		isNull(row, guide.number);
+		
+	isNull(row, formatDate(guide.start_date));
+	isNull(row, guide.number);
 
-		const profileCell = row.insertCell();
-		profileCell.classList.add('profile-cell');
+	const profileCell = row.insertCell();
+	profileCell.classList.add('profile-cell');
 
-		const img = document.createElement('img');
-		img.classList.add('profile-image');
-		witchTumb(guide.patient, img);
+	const img = document.createElement('img');
+	img.classList.add('profile-image');
+	witchTumb(guide.patient, img);
 
-		profileCell.appendChild(img);
-		profileCell.appendChild(document.createTextNode(guide.patient.name));
+	profileCell.appendChild(img);
+	profileCell.appendChild(document.createTextNode(guide.patient.name));
 
-		isNull(row, isDelete(guide.health_insurance));
-		isNull(row, ifNaN(guide.price));
+	isNull(row, isInsuranceDelete(guide.health_insurance));
+	isNull(row, ifNaN(guide.price));
 };
 
 const createTableRows = guides => {
 	const count = guides.length;
+	
 	table.innerHTML = '';
 
 	isValid(); 
