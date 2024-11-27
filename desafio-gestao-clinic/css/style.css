@@ -1,0 +1,165 @@
+body {
+	background-color: #f4f4f4;
+	width: 100%;
+	height: 100vh;
+	margin: 0;
+	font-family: Arial, sans-serif;
+	padding: 20px;
+}
+
+.div-filters {
+	width: 100%;
+	height: 30%;
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+.div-item {
+	width: 20%;
+	height: 50%;
+	display: flex;
+	background-color: rgba(255, 255, 255, 0.8); 
+	border-radius: 8px; 
+	padding: 20px; 
+}
+
+.table-chart-container {
+    display: flex;
+}
+
+
+.table-container {
+    border-radius: 8px;
+    padding: 20px;
+    flex: 2; 
+    margin-right: 10px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table {
+	color: #ffffff;
+	background-color: #007bff;
+	border-collapse: collapse;
+	width: 100%;
+	margin-top: 20px;
+	border-radius: 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+th, td {
+	border: 1px solid #ddd;
+	padding: 15px;
+	text-align: center;
+	background-color: white;
+	color: #555;
+	transition: background-color 0.3s;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	border-collapse: collapse;
+}
+
+th {
+	background-color: #007bff;
+	color: white;
+}
+
+.chart-container {
+    flex: 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pie-chart {
+    background-color: #3e3e3e;
+    border-radius: 50%;
+    width: 400px;
+    height: 400px;
+    position: relative;
+}
+
+
+.slice {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    clip-path: polygon(100% 0%, 100% 100%, 50% 50%);
+}
+
+.slice1 {
+    background-color: #ff6384;
+    transform: rotate(0deg);
+}
+
+.slice2 {
+    background-color: #36a2eb;
+    transform: rotate(72deg);
+}
+
+
+
+.slice3 {
+	background-color: #cc65fe;
+	transform: rotate(144deg);
+}
+
+.slice4 {
+	background-color: #ffce56;
+	transform: rotate(216deg);
+}
+
+.slice5 {
+	background-color: #4bc0c0;
+	transform: rotate(288deg);
+}
+
+
+.legend {
+	margin-top: 10px;
+}
+
+.legend .item {
+	display: flex;
+	align-items: center;
+	margin: 5px 0;
+}
+
+.legend .color {
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
+	border-radius: 3px;
+}
+
+.color1 { background-color: #ff6384; }
+.color2 { background-color: #36a2eb; }
+.color3 { background-color: #cc65fe; }
+.color4 { background-color: #ffce56; }
+.color5 { background-color: #4bc0c0; }
+
+button {
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	padding: 10px 20px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+	box-shadow: 0 4px 6px rgba(0, 123, 255, 0.2);
+}
+
+.pagination-div {
+	display: flex;
+	align-items: center;
+	width: 100px;
+	height: 50px;
+	gap: 20px;
+}
