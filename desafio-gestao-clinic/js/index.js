@@ -5143,95 +5143,413 @@ const data = [
 //   - Totais por data (dia / mes / ano)
 
 let currentPage = 0;
+let currentPagesId = 0;
+let currentPagesKey = 0;
+let currentPageAttendance = 0;
+let currentPageFinance = 0;
+let currentPageTiss = 0;
+let currentPageProcedureAttendance = 0;
+let currentPageProcedureFinance = 0;
+let currentPageDate = 0;
 
+const itemsPerPageDate = 4;
+const itemsPerPage = 4;
 const dataCopy = [...data];
-const guidesPerPage = 9;
+const guidesPerPage = 8;
 const tableBody = document.querySelector('.tbody');
 const prevButton = document.querySelector('.prev');
 const nextButton = document.querySelector('.next');
 const firstButton = document.querySelector('.first');
 const lastButton = document.querySelector('.last');
 const pText = document.querySelector('.text');
-const divOne = document.querySelector('.div-one');
-const divTwo = document.querySelector('.div-two');
-const divTree = document.querySelector('.div-tree');
-const divFour = document.querySelector('.div-four');
+const ulId = document.getElementById('id');
+const ulKey = document.getElementById('key');
+const ulAttendance = document.getElementById('attendance');
+const ulFinance = document.getElementById('finance');
+const ulTiss = document.getElementById('tiss');
+const ulProcedureAttendance = document.getElementById('procedure-attendance');
+const ulProcedureFinance = document.getElementById('procedure-finance')
+const ulDate = document.getElementById('date');
+const textId = document.querySelector('.text-id');
+const textKey = document.querySelector('.text-key');
+const textAttendance = document.querySelector('.text-attendance');
+const textFinance = document.querySelector('.text-finance');
+const textTiss = document.querySelector('.text-tiss');
+const textProcedureAttendance = document.querySelector('.text-procedure-attendance');
+const textProcedureFinance = document.querySelector('.text-procedure-finance');
+const firstDate = document.querySelector('.first-date');
+const prevDate = document.querySelector('.prev-date');
+const textDate = document.querySelector('.text-date');
+const nextDate = document.querySelector('.next-date');
+const lastDate = document.querySelector('.last-date');
 
-const updateTable = (data) => {
-    tableBody.innerHTML = '';
+const idCountsResult = (data, key) => {
+	const idCounts = {};
+	data.forEach(item => {
+		const identification = item[key];
+		
+		idCounts[identification] = (idCounts[identification] || 0) + 1;
+	});
+	return idCounts;
+};
 
-    const startIndex = currentPage * guidesPerPage;
-    const endIndex = startIndex + guidesPerPage;
-    const guidesToDisplay = data.slice(startIndex, endIndex);
+const groupByAttendanceProduces = (data, parameterOne, parameterTwo) => {
+	const groupedResults = {}; 
 
-    guidesToDisplay.forEach(item => {
-        const row = tableBody.insertRow();
-        const notReceved = item.liquid_price - (item.received_value || 0);
+	data.forEach(guide => {
+		const key1 = guide[parameterOne];
+		const key2 = guide[parameterTwo];
+		const combinedKey = `${key1}_${key2}`;
 
-        row.insertCell().innerHTML = item.price || 0;
-        row.insertCell().innerHTML = item.liquid_price || 0;
-        row.insertCell().innerHTML = item.received_value || 0;
-        row.insertCell().innerHTML = notReceved;
-    });
+		if (!groupedResults[combinedKey]) {
+			groupedResults[combinedKey] = ['-'];
+		};
+		groupedResults[combinedKey].push(guide);
+	});
+	return groupedResults;
+};
+
+const groupByDate = (data, dateKey) => {
+	const groupedData = {};
+
+	data.forEach(guide => {
+		const dateTime = guide[dateKey];
+		const date = dateTime.split(' ')[0];
+
+		if (!groupedData[date]) {
+			groupedData[date] = [];
+		};
+
+		groupedData[date].push(guide);
+	});
+	return groupedData;
+};
+
+const idxCount = (data, key) => {
+	const Counts = {};
+
+	data.forEach(item => {
+		const dataKey = item[key];
+		const groupKey = dataKey; 
+		const match = groupKey.match(/IDX_(\d+)/);
+
+		if (match) {
+			const idxKey = `idx_${match[0]}`;
+			Counts[idxKey] = (Counts[idxKey] || 0) + 1;
+		};
+	});
+	return Counts;
+};
+
+const idCounts = idCountsResult(data, 'procedure_id');
+const idKey = idxCount(data, 'group_key');
+const idAttendance = idCountsResult(data, 'attendance_id');
+const idFinance = idCountsResult(data, 'finance_id');
+const idTiss = idCountsResult(data, 'tiss_type');
+const groupedProduce = groupByAttendanceProduces(data, 'attendance_id', 'procedure_id');
+const groupedFinanceProduce = groupByAttendanceProduces(data, 'finance_id', 'procedure_id');
+const dateGrouped = groupByDate(data, 'created_at');
+
+const calculateTotals = (data) => {
+	let totalPrice = 0;
+	let totalLiquidPrice = 0;
+	let totalReceivedValue = 0;
+	let totalNotReceived = 0;
+
+	data.forEach(item => {
+		totalPrice += item.price || 0;
+		totalLiquidPrice += item.liquid_price || 0;
+		totalReceivedValue += item.received_value || 0;
+		totalNotReceived += (item.liquid_price || 0) - (item.received_value || 0);
+	});
+	return { totalPrice, totalLiquidPrice, totalReceivedValue, totalNotReceived };
+};
+
+const updateTable = data => {
+	tableBody.innerHTML = '';
+
+	const startIndex = currentPage * guidesPerPage;
+	const endIndex = Math.min(startIndex + guidesPerPage, data.length);
+	const guidesToDisplay = data.slice(startIndex, endIndex);
+	const totals = calculateTotals(data);
+
+	guidesToDisplay.forEach(item => {
+		const row = tableBody.insertRow();
+		const notReceved = (item.liquid_price || 0) - (item.received_value || 0);
+
+		row.insertCell().innerHTML = item.price || 0;
+		row.insertCell().innerHTML = item.liquid_price || 0;
+		row.insertCell().innerHTML = item.received_value || 0;
+		row.insertCell().innerHTML = notReceved;
+	});
+
+	const totalsRow = tableBody.insertRow();
+
+	totalsRow.insertCell().innerHTML = `<b>Total: ${totals.totalPrice.toFixed(2)}</b>`;
+	totalsRow.insertCell().innerHTML = `<b>Total: ${totals.totalLiquidPrice.toFixed(2)}</b>`;
+	totalsRow.insertCell().innerHTML = `<b>Total: ${totals.totalReceivedValue.toFixed(2)}</b>`;
+	totalsRow.insertCell().innerHTML = `<b>Total: ${totals.totalNotReceived.toFixed(2)}</b>`;
 };
 
 const updatePaginationText = () => {
-    const totalPages = Math.ceil(data.length / guidesPerPage);
+	const totalPages = Math.ceil(data.length / guidesPerPage);
 
-    pText.innerHTML = `${currentPage + 1}/${totalPages}`;
-};
-
-const divsInformation = (information, div) => {
-    const list = document.createElement('ul');
-
-    information.forEach(item => {
-        const listItem = document.createElement('li'); 
-
-        listItem.textContent = item; 
-        
-        list.appendChild(listItem);
-    });
-    div.appendChild(list);
+	pText.innerHTML = `${currentPage + 1}/${totalPages}`;
 };
 
 prevButton.addEventListener('click', () => {
-    if (currentPage > 0) {
-        currentPage--;
+	if (currentPage > 0) {
+		currentPage--;
 
-        updateTable(data);
-        updatePaginationText();
-    }
+		updateTable(data)
+		updatePaginationText();
+	};
 });
 
 nextButton.addEventListener('click', () => {
-    const totalPages = Math.ceil(data.length / guidesPerPage);
+	const totalPages = Math.ceil(data.length / guidesPerPage);
 
-    if (currentPage < totalPages - 1) {
-        currentPage++;
+	if (currentPage < totalPages - 1) {
+		currentPage++;
 
-        updateTable(data);
-        updatePaginationText();
-    }
+		updateTable(data)
+		updatePaginationText();
+	};
 });
 
 firstButton.addEventListener('click', () => {
-    currentPage = 0;
+	currentPage = 0;
 
-    updateTable(data);
-    updatePaginationText();
+	updateTable(data);
+	updatePaginationText();
 });
 
 lastButton.addEventListener('click', () => {
-    currentPage = Math.ceil(data.length / guidesPerPage) - 1;
+	currentPage = Math.ceil(data.length / guidesPerPage) - 1;
 
-    updateTable(data);
-    updatePaginationText();
+	updateTable(data);
+	updatePaginationText();
 });
 
+const updateList = (data, current, div, ulName) => {
+	div.innerHTML = '';
+
+	const ulList = document.createElement('ul'); 
+	const dataArray = Object.entries(data);
+	const indexStart = current * itemsPerPage;
+	const indexEnd = indexStart + itemsPerPage;
+	const currentPageItems = dataArray.slice(indexStart, indexEnd);
+
+	ulList.textContent = ulName;
+
+	currentPageItems.forEach(item => {
+		const listItem = document.createElement('li');
+		const formattedItem = item.join(`: `);
+
+		ulList.appendChild(listItem);
+
+		listItem.textContent = formattedItem;
+	});
+	div.appendChild(ulList); 
+};
+
+const producereUpdateList = (data, current, div, ulName) => {
+	div.innerHTML = '';
+	const ulList = document.createElement('ul');
+	const dataArray = Object.keys(data);
+	const indexStart = current * itemsPerPage;
+	const indexEnd = indexStart + itemsPerPage;
+	const currentPageItems = dataArray.slice(indexStart, indexEnd);
+
+	ulList.textContent = ulName;
+
+	currentPageItems.forEach(item => {
+		const listItem = document.createElement('li');
+
+		ulList.appendChild(listItem);
+		listItem.textContent = item;
+	});
+	div.appendChild(ulList); 
+};
+
+const updateDataList = (data, current, div, listName) => {
+	div.innerHTML = '';
+
+	const ulList = document.createElement('ul');
+	const indexStart = current * itemsPerPage;
+	const indexEnd = indexStart + itemsPerPage;
+	const dataArray = Object.entries(data);
+	const currentPageItems = dataArray.slice(indexStart, indexEnd);
+
+	ulList.textContent = listName;
+
+	currentPageItems.forEach(item => {
+		const listItem = document.createElement('li');
+
+		listItem.textContent = `${item[0]}: ${item[1].length}`;
+		ulList.appendChild(listItem);
+	});
+	div.appendChild(ulList);
+};
+
+const updateUlText = (currentPage, data, text) => {
+	const totalPages = Math.ceil(Object.entries(data).length / itemsPerPage);
+
+	currentPage++; 
+	text.innerHTML = `${currentPage + 1} de ${totalPages}`;
+};
+
+const createPaginationButtons = (data, currentVar, ul, name, textElement, produces = false) => {
+	const update = () => {
+		(produces) ? producereUpdateList(data, currentVar.value, ul, name) : updateList(data, currentVar.value, ul, name);
+
+		textElement.textContent = `${currentVar.value + 1}/${Math.ceil(Object.keys(data).length / itemsPerPage)}`;
+	};
+
+	const increment = () => {
+		const totalPages = Math.ceil(Object.keys(data).length / itemsPerPage);
+
+		if (currentVar.value < totalPages - 1) {
+			currentVar.value++;
+
+			update();
+		}
+	};
+
+	const decrement = () => {
+		if (currentVar.value > 0) {
+			currentVar.value--;
+
+			update();
+		}
+	};
+
+	textElement.textContent = `${currentVar.value + 1} de ${Math.ceil(Object.keys(data).length / itemsPerPage)}`;
+	update();
+
+	const nextButton = document.querySelector(`.next-${name}`);
+	const prevButton = document.querySelector(`.prev-${name}`);
+	const firstButton = document.querySelector(`.first-${name}`);
+	const lastButton = document.querySelector(`.last-${name}`);
+
+	nextButton.addEventListener('click', increment);
+	prevButton.addEventListener('click', decrement);
+	firstButton.addEventListener('click', () => { currentVar.value = 0; update(); });
+	lastButton.addEventListener('click', () => { currentVar.value = Math.ceil(Object.keys(data).length / itemsPerPage) -1; update(); });
+};
+
+const createDataPagination = () => {
+
+	const updateDateList = (data, current, div) => {
+		div.innerHTML = '';
+
+		const ulList = document.createElement('ul');
+		const dataArray = Object.entries(data);
+		const startIndex = current * itemsPerPageDate;
+		const endIndex = Math.min(startIndex + itemsPerPageDate, dataArray.length);
+		const currentPageItems = dataArray.slice(startIndex, endIndex);
+
+		ulList.textContent = 'Datas';
+
+		currentPageItems.forEach(item => {
+			const listItem = document.createElement('li');
+
+			listItem.textContent = `${item[0]}: ${item[1].length}`;
+			ulList.appendChild(listItem);
+		});
+		div.appendChild(ulList);
+	};
+
+	const update = () => {
+		updateDateList(dateGrouped, currentPageDate, ulDate);
+		textDate.textContent = `${currentPageDate + 1}/${Math.ceil(Object.keys(dateGrouped).length / itemsPerPageDate)}`;
+	};
+
+	const increment = () => {
+		const totalPages = Math.ceil(Object.keys(dateGrouped).length / itemsPerPageDate);
+
+		if (currentPageDate < totalPages - 1) {
+			currentPageDate++;
+
+			update();
+		};
+	};
+
+	const decrement = () => {
+		if (currentPageDate > 0) {
+			currentPageDate--;
+
+			update();
+		};
+	};
+
+	prevDate.addEventListener('click', decrement);
+	nextDate.addEventListener('click', increment);
+	firstDate.addEventListener('click', () => { currentPageDate = 0; update(); });
+	lastDate.addEventListener('click', () => { currentPageDate = Math.ceil(Object.keys(dateGrouped).length / itemsPerPageDate) - 1; update(); });
+
+	update();
+};
+
+const calculateMonthlyReceivedValue = (data) => {
+	const monthlyTotals = {};
+
+	data.forEach(item => {
+		const dateParts = item.created_at.split(' ')[0].split('-');
+		const month = dateParts[1];
+		const received = item.received_value || 0;
+
+		monthlyTotals[month] = (monthlyTotals[month] || 0) + received;
+	});
+	return monthlyTotals;
+};
+
+const updatePieChart = (monthlyData) => {
+	let currentRotation = 0;
+
+	const totalReceived = Object.values(monthlyData).reduce((sum, value) => sum + value, 0);
+	const slices = document.querySelectorAll('.slice');
+	const colors = ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#4bc0c0'];
+	const months = Object.keys(monthlyData);
+
+	document.querySelectorAll('.pie-label').forEach(label => label.remove());
+
+	months.forEach((month, index) => {
+		const receivedValue = monthlyData[month];
+		const percentage = (receivedValue / totalReceived) * 360;
+		const slice = slices[index];
+		slice.style.transform = `rotate(${currentRotation + percentage / 2}deg)`;
+		slice.style.backgroundColor = colors[index % colors.length];
+		currentRotation += percentage;
+	});
+};
+
 const init = () => {
-    updateTable(data);
-    updatePaginationText();
-    divsInformation()
+	const monthlyReceived = calculateMonthlyReceivedValue(data);
+	
+	updateTable(data);
+	updatePaginationText();
+
+	updateList(idCounts, currentPagesId, ulId, 'ID');
+	updateList(idKey, currentPagesKey, ulKey, 'CHAVES');
+	updateList(idAttendance, currentPageAttendance, ulAttendance, 'ATENDIMENTO');
+	updateList(idFinance, currentPageFinance, ulFinance, 'FINANCEIRO')
+	updateList(idTiss, currentPageTiss, ulTiss, 'tiss');
+	updateDataList(dateGrouped, currentPageDate, ulDate, 'datas');
+
+	producereUpdateList(groupedProduce, currentPageProcedureAttendance, ulProcedureAttendance, 'procedure attendance');
+	producereUpdateList(groupedFinanceProduce, currentPageProcedureFinance, ulProcedureFinance, 'procedure finance');
+
+	createPaginationButtons(idCounts, {value: currentPagesId}, ulId, 'id', textId);
+	createPaginationButtons(idKey, {value: currentPagesKey}, ulKey, 'key', textKey);
+	createPaginationButtons(idAttendance, {value: currentPageAttendance}, ulAttendance, 'attendance', textAttendance);
+	createPaginationButtons(idFinance, {value: currentPageFinance}, ulFinance, 'finance', textFinance);
+	createPaginationButtons(idTiss, {value: currentPageTiss}, ulTiss, 'tiss', textTiss);
+	createPaginationButtons(groupedProduce, {value: currentPageProcedureAttendance}, ulProcedureAttendance, 'procedure-attendance', textProcedureAttendance, true);
+	createPaginationButtons(groupedFinanceProduce, {value: currentPageProcedureFinance}, ulProcedureFinance, 'procedure-finance', textProcedureFinance, true);
+	createDataPagination();
+
+	updatePieChart(monthlyReceived);
 };
 
 init();
