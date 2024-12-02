@@ -1,13 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
-    <title>Document</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../css/style.css">
+	<title>Document</title>
 </head>
 <body>
-    
+	<div class="div-filters">
+		<div class="div-item" id="div-one">
+			<div class="div-buttons">
+				<ul id="id"></ul>
+				<button class="first-id">&lt;&lt;</button>
+				<button class="prev-id">&lt;</button>
+				<span class="text-id">1</span>
+				<button class="next-id">&gt;</button>
+				<button class="last-id">&gt;&gt;</button>
+			</div>
+			<div class="div-buttons">
+				<ul id="key"></ul>
+				<button class="first-key">&lt;&lt;</button>
+				<button class="prev-key">&lt;</button>
+				<span class="text-key">1</span>
+				<button class="next-key">&gt;</button>
+				<button class="last-key">&gt;&gt;</button>
+			</div>
+		</div>
+		<div class="div-item" id="div-two">
+			<div class="div-buttons">
+				<ul id="attendance"></ul>
+				<button class="first-attendance">&lt;&lt;</button>
+				<button class="prev-attendance">&lt;</button>
+				<span class="text-attendance">1</span>
+				<button class="next-attendance">&gt;</button>
+				<button class="last-attendance">&gt;&gt;</button>
+			</div>
+			<div class="div-buttons">
+				<ul id="finance"></ul>
+				<button class="first-finance">&lt;&lt;</button>
+				<button class="prev-finance">&lt;</button>
+				<span class="text-finance">1</span>
+				<button class="next-finance">&gt;</button>
+				<button class="last-finance">&gt;&gt;</button>
+			</div>
+		</div>
+		<div class="div-item" id="div-tree">
+			<div class="div-buttons">
+				<ul id="tiss"></ul>
+				<button class="first-tiss">&lt;&lt;</button>
+				<button class="prev-tiss">&lt;</button>
+				<span class="text-tiss">1</span>
+				<button class="next-tiss">&gt;</button>
+				<button class="last-tiss">&gt;&gt;</button>
+			</div>
+			<div class="div-buttons">
+				<ul id="procedure-attendance"></ul>
+				<button class="first-procedure-attendance">&lt;&lt;</button>
+				<button class="prev-procedure-attendance">&lt;</button>
+				<span class="text-procedure-attendance">1</span>
+				<button class="next-procedure-attendance">&gt;</button>
+				<button class="last-procedure-attendance">&gt;&gt;</button>
+			</div>
+		</div>
+		<div class="div-item" id="div-four">
+			<div class="div-buttons">
+				<ul id="procedure-finance"></ul>
+				<button class="first-procedure-finance">&lt;&lt;</button>
+				<button class="prev-procedure-finance">&lt;</button>
+				<span class="text-procedure-finance">1</span>
+				<button class="next-procedure-finance">&gt;</button>
+				<button class="last-procedure-finance">&gt;&gt;</button>
+			</div>
+			<div class="div-buttons">
+				<ul id="date"></ul>
+				<button class="first-date">&lt;&lt;</button>
+				<button class="prev-date">&lt;</button>
+				<span class="text-date">1</span>
+				<button class="next-date">&gt;</button>
+				<button class="last-date">&gt;&gt;</button>
+			</div>
+		</div>
+	</div>
+	<main class="table-chart-container">
+		<div class="table-container">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Preço total</th>
+						<th>Preço liquido</th>
+						<th>Valor recebido</th>
+						<th>Valor nao recebido</th>
+					</tr>
+				</thead>
+				<tbody class="tbody">
+				</tbody>
+			</table>
+			<div class="fixed-pagination">
+				<div class="pagination-div">
+					<button class="first button-table" ">primeiro</button>
+					<button class="prev button-table" "><</button>
+					<p class="text button-table" "></p>
+					<button class="next button-table" ">></button>
+					<button class="last button-table" ">ultimo</button>
+				</div>
+			</div>
+		</div>
+		<span class="fixed">
+			<div class="chart-container">
+				<div class="chart-discription">Março: amarelo <br> Abril: verde bebe <br> Outubro: vermelho <br> Novembro: azul bebe <br> Dezembro: roxo</div>
+				<div class="pie-chart">
+					<div class="slice slice1"></div>
+					<div class="slice slice2"></div>
+					<div class="slice slice3"></div>
+					<div class="slice slice4"></div>
+					<div class="slice slice5"></div>
+				</div>
+			</div>
+		</span>
+	</main>
 </body>
 <script src="../js/index.js"></script>
 </html>
