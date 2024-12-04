@@ -29,7 +29,7 @@ const nextButton = document.getElementById('next-btn');
 const prevButton = document.getElementById('prev-btn');
 const paginationButtons = document.getElementById('page-buttons');
 const paginationDiv = document.querySelector('.pagination');
-const root = document.querySelector('.root'); 
+const root = document.querySelector('.root');
 const expectedHTML = `
  <div class="search">
 			<p>Pesquisar</p> 
@@ -40,7 +40,7 @@ const expectedHTML = `
 			<button id="day">dia</button>
 			<select required="" class="search-select">
 				<option value="convenio">convênio</option>
-			<option value="3322">Amil</option><option value="3293">Bradesco</option><option value="99231">Hapvida</option><option value="1322">CASSI</option><option value="23111">Sulamérica</option><option value="8323">Amil Cooperados</option><option value="27172">Amil 500</option><option value="92813">TRT</option><option value="18293">PLAN ASSIST</option><option value="23321">AMEPE CAMPE</option><option value="12322">ASSEFAZ</option><option value="2881">BANCO CENTRAL</option><option value="992">CAMED SAÚDE</option></select>
+			<option value="3322">Amil</option><option value="3293">Bradesco</option><option value="99231">Hapvida</option><option value="1322">CASSI</option><optionvalue="23111">Sulamérica</option><option value="8323">Amil Cooperados</option><option value="27172">Amil 500</option><option value="92813">TRT</option><option value="18293">PLAN ASSIST</option><option value="23321">AMEPE CAMPE</option><option value="12322">ASSEFAZ</option><option value="2881">BANCO CENTRAL</option><option value="992">CAMED SAÚDE</option></select>
 		</div>
 		<div>
 			<table class="table">
@@ -49,7 +49,7 @@ const expectedHTML = `
 					<th>Data</th>
 					<th>Número</th>
 					<th> 
-						<i class="fa-solid fa-sort-up" id="icon"></i>    
+						<i class="fa-solid fa-sort-up" id="icon"></i>
 						Paciente
 					</th>
 					<th>Convênio</th>
@@ -62,7 +62,7 @@ const expectedHTML = `
 `.trim();
 const OtherExpectedHtml = `
  <div class="search">
-			<p>Pesquisar</p> 
+			<p>Pesquisar</p>
 			<input type="text" id="input-search" placeholder="buscar...">
 			<input id="dateTime" class="start" type="date" placeholder="Data de Início" oninput="yearLimit(this)">
 			<input id="dateTime" class="end" type="date" placeholder="Data de Fim" oninput="yearLimit(this)">
@@ -70,7 +70,7 @@ const OtherExpectedHtml = `
 			<button id="day">dia</button>
 			<select required="" class="search-select">
 				<option value="convenio">convênio</option>
-			<option value="3322">Amil</option><option value="3293">Bradesco</option><option value="99231">Hapvida</option><option value="1322">CASSI</option><option value="23111">Sulamérica</option><option value="8323">Amil Cooperados</option><option value="27172">Amil 500</option><option value="92813">TRT</option><option value="18293">PLAN ASSIST</option><option value="23321">AMEPE CAMPE</option><option value="12322">ASSEFAZ</option><option value="2881">BANCO CENTRAL</option><option value="992">CAMED SAÚDE</option></select>
+			<option value="3322">Amil</option><option value="3293">Bradesco</option><option value="99231">Hapvida</option><option value="1322">CASSI</option><optionvalue="23111">Sulamérica</option><option value="8323">Amil Cooperados</option><option value="27172">Amil 500</option><option value="92813">TRT</option><option value="18293">PLAN ASSIST</option><option value="23321">AMEPE CAMPE</option><option value="12322">ASSEFAZ</option><option value="2881">BANCO CENTRAL</option><option value="992">CAMED SAÚDE</option></select>
 		</div>
 		<div>
 			<table class="table">
@@ -79,7 +79,7 @@ const OtherExpectedHtml = `
 					<th>Data</th>
 					<th>Número</th>
 					<th> 
-						<i class="fa-solid fa-sort-down" id="icon"></i>    
+						<i class="fa-solid fa-sort-down" id="icon"></i>
 						Paciente
 					</th>
 					<th>Convênio</th>
@@ -100,13 +100,13 @@ const tableJson = () => {
 	}).then(data => {
 		dataTableCopy = data.data;
 		if (dataTableCopy && dataTableCopy.guides) {
-			dataTableCopy.guides.forEach(guide => completingHealthInsurances(dataTableCopy.guides, dataInsurancesCopy));
-			
-			const sortedGuidesResult = sortedGuides(dataTableCopy.guides); 
+			dataTableCopy.guides.forEach(dataTableCopy => completingHealthInsurances(dataTableCopy.guides, dataInsurancesCopy));
+			const sortedGuidesResult = sortedGuides(dataTableCopy.guides);
 
 			createPagination(dataTableCopy.guides.length, sortedGuidesResult);
 			createTableRows(dataTableCopy.guides);
 		};
+
 		currentMonth();
 	}).catch(error => {
 		console.error('Erro ao buscar o JSON:', error);
@@ -132,14 +132,15 @@ const completingHealthInsurances = (guides, healthInsurances) => {
 	guides.forEach(guide => {
 		if (guide.health_insurance === null) {
 			const insurance = healthInsurances.find(num => num.id === guide.insurance_id);
+
 			if (insurance) {
 				guide.health_insurance = {
 					id: insurance.id,
 					name: insurance.name,
 					is_deleted: false,
 				};
-			}
-		}
+			};
+		};
 	});
 };
 
@@ -148,10 +149,8 @@ const warning = () => {
 
 	document.querySelector('.search').style.display = 'none';
 	document.querySelector('.table').style.display = 'none';
-
 	warning.id = 'reload-warning';
 	warning.innerHTML = 'Por favor, recarregue a página';
-
 	document.body.appendChild(warning);
 	warning.style.display = 'block';
 };
@@ -159,8 +158,7 @@ const warning = () => {
 const isValid = () => {
 	const divContent = root.innerHTML.trim();
 
-	if (divContent === expectedHTML || divContent === OtherExpectedHtml) return; 
-
+	if (divContent === expectedHTML || divContent === OtherExpectedHtml) return;
 	else warning();
 };
 
@@ -211,25 +209,23 @@ const callDataByData = () => {
 	};
 };
 
-const sortedGuides = guides => isOrderned ? guides.sort((guideA, guideB) => guideA.patient.name.localeCompare(guideB.patient.name)) : guides.reverse();
+const sortedGuides = guides => isOrderned ? guides.sort((primaryGuide, secondaryGuide) => primaryGuide.patient.name.localeCompare(secondaryGuide.patient.name)) : guides.reverse();
 
 select.addEventListener('change', () => {
 	const selectValue = parseInt(select.value);
+	const filteredGuides = dataTableCopy.guides.filter(guide => guide.insurance_id === selectValue);
 
 	paginationFlag = true;
 	paginationButtonFlag = true;
-
-	if (dataTableCopy && dataTableCopy.guides) {
-		const filteredGuides = dataTableCopy.guides.filter(guide => guide.insurance_id === selectValue);
-
-		createTableRows(filteredGuides);
-	};
+	if (dataTableCopy && dataTableCopy.guides) createTableRows(filteredGuides);
+	
 	if (select.value === 'convenio') {
 		currentPage = 0; 
 
 		updateTable(dataTableCopy.guides);
 		inicialPagination();
 	};
+
 	dateStart.value = '';
 	dateEnd.value = '';
 });
@@ -252,24 +248,26 @@ const inicialPagination = () => {
 
 prevButton.addEventListener('click', () => {
 	if (notFounded) return;
+
 	if (currentPage > 0) {
 		currentPage--;
 
 		updateTable(dataTableCopy.guides);
 	};
+
 	inicialPagination();
 });
 
 nextButton.addEventListener('click', () => {
-	if (notFounded) return;
-
 	const totalPages = Math.ceil(dataTableCopy.guides.length / guidesPerPage);
+
+	if (notFounded) return;
 
 	if (currentPage < totalPages - 1) {
 		currentPage++;
+
 		updateTable(dataTableCopy.guides);
 	};
-
 	inicialPagination();
 });
 
@@ -323,15 +321,12 @@ dateEnd.addEventListener('change', () => {
 });
 
 input.addEventListener('input', () => {
+	const inputFilter = dataTableCopy.guides.filter(guide => guide.patient.name.toLowerCase().includes(input.value.toLowerCase()) || guide.number.includes(input.value));
 
-const inputFilter = dataTableCopy.guides.filter(guide => guide.patient.name.toLowerCase().includes(input.value.toLowerCase()) ||
-guide.number.includes(input.value));
+	createTableRows(inputFilter);
 
-paginationFlag = true;
-paginationButtonFlag = true;
-
-createTableRows(inputFilter);
-
+	paginationButtonFlag = true;
+	paginationFlag = true;
 	dateStart.value = '';
 	dateEnd.value = '';
 });
@@ -360,7 +355,7 @@ const witchTumb = (patient, image) => image.src = patient.thumb_url || thumbUrl;
 
 const isNull = (row, guide) => {
 	if (!guide) return row.insertCell().innerHTML = '-';
-
+	
 	else return row.insertCell().innerHTML = guide;
 };
 
@@ -380,14 +375,13 @@ const createPagination = (count, guides) => {
 
 	for (let i = 0; i < totalPages; i++) {
 		const button = document.createElement('button');
+		const startIndex = i * guidesPerPage;
+		const endIndex = startIndex + guidesPerPage;
+		const guidesToDisplay2 = guidesCopy.slice(startIndex, endIndex);
 
 		button.textContent = `${i + 1}`;
 
 		button.addEventListener('click', () => {
-			const startIndex = i * guidesPerPage;
-			const endIndex = startIndex + guidesPerPage;
-			const guidesToDisplay2 = guidesCopy.slice(startIndex, endIndex);
-
 			paginationFlag = false;
 			paginationButtonFlag = false;
 
@@ -398,9 +392,6 @@ const createPagination = (count, guides) => {
 	};
 
 	for (let i = 0; i < totalPages; i++) {
-		const startIndex = i * guidesPerPage;
-		const endIndex = startIndex + guidesPerPage;
-
 		guidesToDisplay = guidesCopy.slice(startIndex, endIndex);
 	};
 
@@ -414,7 +405,6 @@ const insertEmptyState = () => {
 	cell.colSpan = 5;
 	cell.style.textAlign = 'center';
 	cell.innerHTML = 'nenhuma guia encontrada';
-
 	notFounded = true;
 
 	createPagination(0, []);
@@ -446,10 +436,7 @@ const createTableRows = guides => {
 	table.innerHTML = '';
 
 	isValid();
-
-	if (!guides.length) {
-		return insertEmptyState();
-	};
+	if (!guides.length)return insertEmptyState();
 
 	createPagination(count, guides).forEach(guide => {
 		buildTables(guide);
@@ -457,9 +444,7 @@ const createTableRows = guides => {
 };
 
 const yearLimit = input => {
-	if (input.value.length > 10) {
-		input.value = input.value.slice(10, 11);
-	};
+	if (input.value.length > 10) input.value = input.value.slice(10, 11);
 };
 
 const init = () => {
